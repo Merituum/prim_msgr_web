@@ -8,31 +8,36 @@
 </head>
 <body>
     <div class="login_window">
-        <form method='post'>
+        <form method="post">
             <label for="login_form">Login: </label><br>
-            <input type="text" id="login_form" name="login"><br> <!-- changed type from "login" to "text" -->
+            <input type="text" id="login_form" name="login"><br>
             <label for="password_form">Hasło: </label><br>
             <input type="password" id="password_form" name="password"><br>
             <input type="submit" value="Zaloguj się" id="login_butt">
-            <!-- <button  -->
             <input type="submit" value="Zarejestruj się" name="register">
-            <?php 
-                if(isset($_POST["register"])){
-                    register(); 
-                }
-                else if(isset($_POST["login"])){
-                    login();
-                }
-            ?>
-
         </form>
     </div>
 
     <?php
-    function register(){
-        header("Location: register.php");
+    session_start();
+
+    if (isset($_POST["register"])) {
+        register();
+    } else if (isset($_POST["login"])) {
+        login();
     }
-    function login() {        
+
+    function register() {
+        header("Location: register.php");
+        exit();
+    }
+
+    function login() {
+        if (empty($_POST["login"]) || empty($_POST["password"])) {
+            echo "Login i hasło są wymagane.";
+            return;
+        }
+
         $login_username = $_POST["login"];
         $password_username = $_POST["password"];
         
@@ -54,15 +59,14 @@
         $result_check = mysqli_query($conn, $query_check);
 
         if ($result_check && mysqli_num_rows($result_check) > 0) {
-            echo "Zalogowano pomyślnie.";
-            $_SESSION['login']=$login_username;
+            $_SESSION['login'] = $login_username;
             header("Location: index.php");
+            exit();
         } else {
             echo "Nieprawidłowy login lub hasło.";
         }
         mysqli_close($conn);
     }
     ?>
-
 </body>
 </html>
