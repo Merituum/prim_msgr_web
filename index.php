@@ -27,6 +27,7 @@
             </tr>
             <?php
                 session_start();
+                
                 $db_name = "localhost";
                 $db_user = "root";
                 $db_pass = "";    
@@ -42,6 +43,7 @@
                     exit();
                 } else {
                     echo "Zalogowano jako: " . $_SESSION['login'];
+                    print($_SESSION["ID"]); 
                 }
 
                 if (isset($_POST["wyszukaj"])) {
@@ -60,20 +62,36 @@
                     $result_search = mysqli_query($conn, $query_search);
 
                     if ($result_search && mysqli_num_rows($result_search) > 0) {
-                        display_search_results($result_search);
+                        display_search_results($result_search,$conn);
                     } else {
                         echo "<tr><td colspan='3'>Nie znaleziono użytkownika: $wyszukaj</td></tr>";
                     }
                 }
 
-                function display_search_results($result_search) {
+                function display_search_results($result_search,$conn) {
+                  
                     while ($row = mysqli_fetch_assoc($result_search)) {
                         echo "<tr>";
-                        echo "<td>" . $row["Id"] . "</td>";
+                        echo "<td>" . $row["ID"] . "</td>";
                         echo "<td>" . $row["Login"] . "</td>";
                         echo "<td>" . $row["Haslo"] . "</td>";
+                        echo "<td><input type='submit' value='Dodaj' name='dodaj'></td>";
                         echo "</tr>";
+                        $user_ID="SELECT ID from users WHERE Login='".$_SESSION["Login"];
+                        print(mysqli_query($conn,$user_ID));
+                        $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('".$_SESSION['ID']."','".$row['ID']."')";
+                        // $id_number_querry="SELECT * FROM users WHERE Login='".$row['ID']."'";
+                        //print($id_number_querry);
+                       
                     }
+                   if (isset($_POST["dodaj"])) {
+                        echo "Dodano!";
+                        print("dodano");
+
+                        $make_querry=mysqli_query($conn,$query_add_friend);
+                        
+                    }
+               
                 }
 
                 function wyloguj() {
