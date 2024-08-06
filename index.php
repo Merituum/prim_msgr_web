@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dashboard_style.css">
     <title>Dashboard</title>
 </head>
 <body>
@@ -43,7 +44,10 @@
                     exit();
                 } else {
                     echo "Zalogowano jako: " . $_SESSION['login'];
-                    print($_SESSION["ID"]); 
+                    // $querry_id="SELECT ID FROM users WHERE Login='".$_SESSION['login']."'";
+                    // $result_id=mysqli_query($conn,$querry_id);
+                    // $row_id=mysqli_fetch_assoc($result_id);
+                    // print($row_id." ".$result_id);
                 }
 
                 if (isset($_POST["wyszukaj"])) {
@@ -71,24 +75,26 @@
                 function display_search_results($result_search,$conn) {
                   
                     while ($row = mysqli_fetch_assoc($result_search)) {
+                        echo "<table>";
                         echo "<tr>";
                         echo "<td>" . $row["ID"] . "</td>";
                         echo "<td>" . $row["Login"] . "</td>";
                         echo "<td>" . $row["Haslo"] . "</td>";
                         echo "<td><input type='submit' value='Dodaj' name='dodaj'></td>";
                         echo "</tr>";
-                        $user_ID="SELECT ID from users WHERE Login='".$_SESSION["Login"];
-                        print(mysqli_query($conn,$user_ID));
-                        $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('".$_SESSION['ID']."','".$row['ID']."')";
+                        // $user_ID="SELECT ID from users WHERE Login='".$_SESSION["Login"];
+                        // print(mysqli_query($conn,$user_ID));
+                        // $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('$user_ID','".$row['ID']."')";
                         // $id_number_querry="SELECT * FROM users WHERE Login='".$row['ID']."'";
                         //print($id_number_querry);
+                        echo "</table>";
                        
                     }
                    if (isset($_POST["dodaj"])) {
                         echo "Dodano!";
                         print("dodano");
 
-                        $make_querry=mysqli_query($conn,$query_add_friend);
+                        // $make_querry=mysqli_query($conn,$query_add_friend);
                         
                     }
                
