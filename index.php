@@ -22,9 +22,9 @@
         <!-- Wyniki wyszukiwania -->
         <table>
             <tr>
-                <th>Id</th>
+                <!-- <th>Id</th> -->
                 <th>Login</th>
-                <th>Hasło</th>
+                <!-- <th>Hasło</th> -->
             </tr>
             <?php
                 session_start();
@@ -62,7 +62,7 @@
                 function search($conn, $wyszukaj) {
                     $wyszukaj = mysqli_real_escape_string($conn, $wyszukaj);
                     // $query_search = "SELECT * FROM Users WHERE Login = '$wyszukaj'";
-                    $query_search = "SELECT * FROM Users WHERE Login LIKE '%$wyszukaj%'";
+                    $query_search = "SELECT ID, Login FROM Users WHERE Login LIKE '%$wyszukaj%'";
                     $result_search = mysqli_query($conn, $query_search);
 
                     if ($result_search && mysqli_num_rows($result_search) > 0) {
@@ -75,12 +75,16 @@
                 function display_search_results($result_search,$conn) {
                   
                     while ($row = mysqli_fetch_assoc($result_search)) {
-                        echo "<table>";
+                        // echo "<table>";
                         echo "<tr>";
-                        echo "<td>" . $row["ID"] . "</td>";
+                        // echo "<td>" . $row["ID"] . "</td>";
                         echo "<td>" . $row["Login"] . "</td>";
-                        echo "<td>" . $row["Haslo"] . "</td>";
-                        echo "<td><input type='submit' value='Dodaj' name='dodaj'></td>";
+                        // echo "<td>" . $row["Haslo"] . "</td>";
+                        echo "<td>
+                        <form method='POST' action=''>
+                        <input type='hidden' name='friend_id' value='".$row['ID']."'>
+                        <input type='submit' value='Dodaj' name='dodaj'></td>
+                        </form>";
                         echo "</tr>";
                         // $user_ID="SELECT ID from users WHERE Login='".$_SESSION["Login"];
                         // print(mysqli_query($conn,$user_ID));
@@ -88,22 +92,59 @@
                         // $id_number_querry="SELECT * FROM users WHERE Login='".$row['ID']."'";
                         //print($id_number_querry);
                         echo "</table>";
-                       
+                        
                     }
-                   if (isset($_POST["dodaj"])) {
-                        echo "Dodano!";
-                        print("dodano");
+                   
+                    // $querry_friend_id="SELECT ID FROM users WHERE Login='".$row['Login']."'";
+                    // print($querry_friend_id);
+                    // add_friend($conn, $querry_friend_id);
+                }
+
 
                         // $make_querry=mysqli_query($conn,$query_add_friend);
                         
-                    }
-               
-                }
+                 if (isset($_POST["dodaj"])) {
+                    //  PRINT("DZIALA");   
+                      $friend_id=$_POST["friend_id"];
+                        add_friend($conn,$friend_id);
+                 }
+                
+                
+                
+
 
                 function wyloguj() {
                     session_destroy();
                     header("Location: login.php");
                     exit();
+                }
+                function add_friend($conn, $friend_id) {
+                    // session_start();
+                    if (!isset($_SESSION['login'])) {
+                        header("Location: login.php");
+                        exit();
+                    }
+                    
+                    $user_login=$_SESSION['login'];
+                    $user_login=mysqli_real_escape_string($conn,$user_login);
+                    
+
+                    $user_ID="SELECT ID from users WHERE Login='".$user_login."'";
+                    $user_ID=mysqli_query($conn,$user_ID);
+                    // $user_ID=mysqli_fetch_assoc($user_ID);
+                    print($user_ID);
+                    $user_login=mysqli_real_escape_string($conn,$user_login);
+                    
+                    $friend_login=mysqli_real_escape_string($conn,$friend_id);
+                    
+                    $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('$user_login','$friend_login')";
+                    $make_querry=mysqli_query($conn,$query_add_friend);
+                    if($make_querry){
+                        echo "Dodano znajomego";
+                    }
+                    else{
+                        echo "Nie dodano znajomego";
+                    }
                 }
             ?>
         </table>

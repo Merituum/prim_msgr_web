@@ -15,10 +15,10 @@ CREATE TABLE Wiadomosci (
     FOREIGN KEY (ID_odbierajacego) REFERENCES Users(ID)
 );
 
-CReATE TABLE friends (
+CReATE TABLE friendship (
     ID INT AUTO_INCREMENT PRIMARY KEY,
-    ID_user1 INT NOT NULL,
-    ID_user2 INT NOT NULL,
-    FOREIGN KEY (ID_user1) REFERENCES Users(ID),
-    FOREIGN KEY (ID_user2) REFERENCES Users(ID)
+    ID_user INT NOT NULL,
+    ID_user_friends INT NOT NULL,
+    FOREIGN KEY (ID_user) REFERENCES Users(ID),
+    FOREIGN KEY (ID_user_friends) REFERENCES Users(ID)
 );
