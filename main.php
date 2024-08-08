@@ -21,7 +21,7 @@
                 <th>Wyloguj</th> -->
                 <form method="post" action=""> 
                     <th><input type="submit" value="Strona główna" name="strona_glowna"></th>
-                    <th><input type="submit" value="Dodaj użytkownika" name="dodaj_znajomego"></th>
+                    <th><input type="submit" value="Znajomi" name="dodaj_znajomego"></th>
                     <th><input type="submit" value="Zmien dane logowania" name="zmien_dane"></th>
                     <th><input type="submit" value="Wyloguj" name="wyloguj"></th>
                 </form>

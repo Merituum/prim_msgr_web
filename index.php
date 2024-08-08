@@ -8,16 +8,40 @@
 </head>
 <body>
     <!-- @TO DO, SESSION BREAK -->
-    <div>Zalogowano!</div>
+    <!-- <div>Zalogowano!</div> -->
+     <div>
+    <table id="kafelki">
+            <tr>
+                <!-- <th><a href="main.php">Strona główna</a></th>
+                <th><a href="index.php">Dodaj użytkownika</a></th>
+                <th>Zmien dane logowania</th>
+                <th>Wyloguj</th> -->
+                <form method="post" action=""> 
+                    <th><input type="submit" value="Strona główna" name="strona_glowna"></th>
+                    <th><input type="submit" value="Znajomi" name="dodaj_znajomego"></th>
+                    <th><input type="submit" value="Zmien dane logowania" name="zmien_dane"></th>
+                    <th><input type="submit" value="Wyloguj" name="wyloguj"></th>
+                </form>
+
+            </tr>
+        </table>
+
+</div>
+    <div id="wyswietlanie_friends">
+    <!-- tutaj jest miejsce ze znajomymi -->
+     <?php echo $wyswietlanie_znajomych;?>
+
+    </div>
+
     <div>
         <form method="POST" action="">
             <input type="text" id="wyszukaj" name="wyszukaj" placeholder="Wyszukaj użytkownika">
             <input type="submit" value="Wyszukaj" id="wyszukaj_butt">
         </form>
-        <form method="POST" action="">
+        <!-- <form method="POST" action="">
             <input type="submit" value="Wyloguj" name="wyloguj" id="wyloguj">
             <input type="submit" value="Powrót do strony głównej" name="powrot" id="powrot">
-        </form>
+        </form> -->
     </div>
     <div id="wyniki">
         <!-- Wyniki wyszukiwania -->
@@ -44,7 +68,7 @@
                     header("Location: login.php");
                     exit();
                 } else {
-                    echo "Zalogowano jako: " . $_SESSION['login'];
+                    // echo "Zalogowano jako: " . $_SESSION['login'];
                     // $querry_id="SELECT ID FROM users WHERE Login='".$_SESSION['login']."'";
                     // $result_id=mysqli_query($conn,$querry_id);
                     // $row_id=mysqli_fetch_assoc($result_id);
@@ -63,7 +87,11 @@
                     header("Location: main.php");
                     exit();
                 }
-
+                if (isset($_POST["strona_glowna"])) {
+                    header("Location: main.php");
+                    exit();
+                }
+                
                 function search($conn, $wyszukaj) {
                     $wyszukaj = mysqli_real_escape_string($conn, $wyszukaj);
                     // $query_search = "SELECT * FROM Users WHERE Login = '$wyszukaj'";
@@ -115,7 +143,24 @@
                  }
                 
                 
-                
+                function display_friends($conn, $user_ID) {
+                    $query_friends = "SELECT ID_user_friends FROM friendship WHERE ID_user = '$user_ID'";
+                    $result_friends = mysqli_query($conn, $query_friends);
+
+                    if ($result_friends && mysqli_num_rows($result_friends) > 0) {
+                        while ($row = mysqli_fetch_assoc($result_friends)) {
+                            $friend_id = $row["ID_user_friends"];
+                            $query_friend = "SELECT Login FROM Users WHERE ID = '$friend_id'";
+                            $result_friend = mysqli_query($conn, $query_friend);
+                            if ($result_friend && mysqli_num_rows($result_friend) > 0) {
+                                $row_friend = mysqli_fetch_assoc($result_friend);
+                                echo "<tr><td>" . $row_friend["Login"] . "</td></tr>";
+                            }
+                        }
+                    } else {
+                        echo "<tr><td>Brak znajomych</td></tr>";
+                    }
+                }
 
 
                 function wyloguj() {

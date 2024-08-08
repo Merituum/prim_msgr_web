@@ -1,71 +1,91 @@
-/* styles.css */
+/* main_style.css */
 
-/* General styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+/* Resetowanie marginesów i wypełnień */
+body, h1, h2, h3, h4, h5, h6, p, table, th, td, form, input {
     margin: 0;
     padding: 0;
 }
 
-/* Header styles */
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 0;
-    text-align: center;
+/* Stylizacja ciała strony */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
-/* Table styles */
+/* Stylizacja głównego kontenera */
+div {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Stylizacja tabeli */
 table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
 }
 
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 8px;
+/* Stylizacja nagłówków tabeli */
+th {
+    background: #333;
+    color: #fff;
+    padding: 10px;
     text-align: left;
 }
 
-th {
-    background-color: #f2f2f2;
-}
-
-/* Form styles */
-form {
-    margin: 20px;
-}
-
-input[type="text"] {
+/* Stylizacja komórek tabeli */
+td {
     padding: 10px;
-    width: 80%;
-    margin-right: 10px;
+    border: 1px solid #ddd;
 }
 
+/* Stylizacja linków */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Stylizacja przycisków */
 input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #333;
+    background: #333;
     color: #fff;
     border: none;
+    padding: 10px 20px;
     cursor: pointer;
+    margin: 10px 0;
+    border-radius: 4px;
 }
 
 input[type="submit"]:hover {
-    background-color: #555;
+    background: #555;
 }
 
-/* Footer styles */
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
+/* Stylizacja pól tekstowych */
+input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Stylizacja tekstu w wierszach tabeli o id "kafelki" */
+#kafelki tr {
+    color: white;
+}
+
+/* Stylizacja komórek tabeli w wierszach tabeli o id "kafelki" */
+#kafelki td {
+    color: white;
 }
