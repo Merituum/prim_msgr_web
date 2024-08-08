@@ -130,21 +130,58 @@
                     
 
                     $user_ID="SELECT ID from users WHERE Login='".$user_login."'";
-                    $user_ID=mysqli_query($conn,$user_ID);
+                    $user_ID_result=mysqli_query($conn,$user_ID);
                     // $user_ID=mysqli_fetch_assoc($user_ID);
-                    print($user_ID);
-                    $user_login=mysqli_real_escape_string($conn,$user_login);
                     
-                    $friend_login=mysqli_real_escape_string($conn,$friend_id);
-                    
-                    $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('$user_login','$friend_login')";
-                    $make_querry=mysqli_query($conn,$query_add_friend);
-                    if($make_querry){
-                        echo "Dodano znajomego";
+                    if ($user_ID_result) {
+                        $user_ID_row=mysqli_fetch_assoc($user_ID_result);
+                        $user_ID=$user_ID_row['ID'];
                     }
-                    else{
+                    else {
+                        echo "Nie udało się pobrać ID użytkownika";
+                    }
+
+
+                    $friend_login=mysqli_real_escape_string($conn,$friend_id);
+
+                    $check_friendship_querry = "SELECT * FROM friendship WHERE ID_user='$user_ID' AND ID_user_friends='$friend_login'";
+                    $check_friendship = mysqli_query($conn, $check_friendship_querry);
+
+                    if (mysqli_num_rows($check_friendship) > 0) {
+                        echo "Już jesteście znajomymi";
+                        return;
+                    }
+
+                    $queery_add_friend="INSERT INTO friendship (ID_user, ID_user_friends) VALUES ('$user_ID','$friend_login')";
+                    $make_query_add_friends=mysqli_query($conn,$queery_add_friend);
+                    if ($make_query_add_friends) {
+                        echo "Dodano znajomego";
+                        $query_add_reverse_friend = "INSERT INTO friendship (ID_user, ID_user_friends) VALUES ('$friend_login','$user_ID')";
+                        $make_query_add_reverse_friend=mysqli_query($conn,$query_add_reverse_friend);
+                        if ($make_query_add_reverse_friend) {
+                            echo "Dodano znajomego - odwrotnie";
+                        }
+                        else {
+                            echo "Nie dodano znajomego";
+                        }
+                    }
+                    else {
                         echo "Nie dodano znajomego";
                     }
+                    
+
+                    // $user_login=mysqli_real_escape_string($conn,$user_login);
+                    
+                    // $friend_login=mysqli_real_escape_string($conn,$friend_id);
+                    
+                    // $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('$user_login','$friend_login')";
+                    // $make_querry=mysqli_query($conn,$query_add_friend);
+                    // if($make_querry){
+                    //     echo "Dodano znajomego";
+                    // }
+                    // else{
+                    //     echo "Nie dodano znajomego";
+                    // }
                 }
             ?>
         </table>
