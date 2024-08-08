@@ -1,0 +1,76 @@
+/* main_style.css */
+
+/* Resetowanie marginesów i wypełnień */
+body, h1, h2, h3, h4, h5, h6, p, table, th, td {
+    margin: 0;
+    padding: 0;
+}
+
+/* Stylizacja ciała strony */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Stylizacja głównego kontenera */
+div {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Stylizacja tabeli */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+/* Stylizacja nagłówków tabeli */
+th {
+    background: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+}
+
+/* Stylizacja komórek tabeli */
+td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Stylizacja linków */
+a {
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Stylizacja przycisków */
+input[type="submit"] {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 10px 0;
+}
+#kafelki tr{
+    color:white;
+}
+#kafelki tr:nth-child(odd){
+    background-color: #333;
+}
+input[type="submit"]:hover {
+    background: #555;
+}

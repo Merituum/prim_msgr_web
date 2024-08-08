@@ -60,7 +60,7 @@
 
         if ($result_check && mysqli_num_rows($result_check) > 0) {
             $_SESSION['login'] = $login_username;
-            header("Location: index.php");
+            header("Location: main.php");
             exit();
         } else {
             echo "Nieprawidłowy login lub hasło.";

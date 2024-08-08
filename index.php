@@ -16,6 +16,7 @@
         </form>
         <form method="POST" action="">
             <input type="submit" value="Wyloguj" name="wyloguj" id="wyloguj">
+            <input type="submit" value="Powrót do strony głównej" name="powrot" id="powrot">
         </form>
     </div>
     <div id="wyniki">
@@ -57,6 +58,10 @@
 
                 if (isset($_POST["wyloguj"])) {
                     wyloguj();
+                }
+                if (isset($_POST["powrot"])) {
+                    header("Location: main.php");
+                    exit();
                 }
 
                 function search($conn, $wyszukaj) {
@@ -170,18 +175,7 @@
                     }
                     
 
-                    // $user_login=mysqli_real_escape_string($conn,$user_login);
-                    
-                    // $friend_login=mysqli_real_escape_string($conn,$friend_id);
-                    
-                    // $query_add_friend="INSERT INTO friendship (ID, Friend_ID) VALUES ('$user_login','$friend_login')";
-                    // $make_querry=mysqli_query($conn,$query_add_friend);
-                    // if($make_querry){
-                    //     echo "Dodano znajomego";
-                    // }
-                    // else{
-                    //     echo "Nie dodano znajomego";
-                    // }
+                   
                 }
             ?>
         </table>
