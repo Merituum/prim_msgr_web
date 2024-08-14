@@ -98,7 +98,7 @@
         $conn->query($querry_delete_friend);
         header("Location: main.php");
         
-    }
+    }#test awdawdawd
 
     }
     
