@@ -1,5 +1,10 @@
 <?php
 
+namespace Models;
+use mysqli;
+
+
+
 class Database {
     private $host_name = "localhost";
     private $login = "root";
@@ -13,6 +18,9 @@ class Database {
         if ($this->connection->connect_error) {
             die("Connection failed: " . $this->connection->connect_error);
         }
+    }
+    public function getConnection () {
+        return $this->connection;
     }
     public function query_sql($sql) {
         return $this->connection->query($sql);
