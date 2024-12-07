@@ -51,6 +51,11 @@
         header("Location: login.php");
         exit();
     }
+    if (isset($_POST["zmien_dane"])) {
+        header("Location: change_data.php");
+        exit();
+    }
+
     function dashboard_display_friends($conn) {
         $user_login=$_SESSION['login'];
         $querry_id="SELECT id FROM users WHERE login='$user_login'";
