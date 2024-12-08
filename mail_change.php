@@ -23,17 +23,35 @@
         </tr>
     </table>
 </div>
-<p name="action_choice">
-<form method="post">
-    <input type="submit" value="Zmiana hasła" name = "password_change">
-    <input type="submit" value="Zmiana adresu E-Mail" name="mail_change">
-    <input  type="submit" value="Zmiana pytania pomocniczego" name="question_change">
-    <input  type="submit" value="Usuń konto" name="delete_acc">
 
 
-
-</form>
+<p>
+    <form method="post">
+    Podaj hasło <br>
+    <input type="password" name="password" value="Podaj hasło"><br>
+    Czy jesteś świadomy tego co robisz?<br>
+   <input type="checkbox" name="confirm" value="Tak">
+    <input type="submit" name="delete_acc" value="Skasuj konto">
+ </form>
 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
 
 
 <?php
@@ -69,22 +87,5 @@ else if (isset($_POST["wyloguj"])) {
     header("Location: login.php");
     exit();
 }
-else if (isset($_POST["delete_acc"])) {
-    header("Location: delete_acc.php");
-    exit();
-}
-else if (isset($_POST["question_change"])) {
-    header("Location: question_change.php");
-    exit();
-}
-else if (isset($_POST["mail_change"])) {
-    header("Location: mail_change.php");
-    exit();
-}
-else if (isset($_POST["password_change"])) {
-    header("Location: password_change.php");
-    exit();
-}
-?>
-</body>
-</html>
+
+    ?>

@@ -23,17 +23,35 @@
         </tr>
     </table>
 </div>
-<p name="action_choice">
+
+
+<p>
 <form method="post">
-    <input type="submit" value="Zmiana hasła" name = "password_change">
-    <input type="submit" value="Zmiana adresu E-Mail" name="mail_change">
-    <input  type="submit" value="Zmiana pytania pomocniczego" name="question_change">
-    <input  type="submit" value="Usuń konto" name="delete_acc">
-
-
-
+    Podaj hasło <br>
+    <input type="password" name="password" value="Podaj hasło"><br>
+    Czy jesteś świadomy tego co robisz?<br>
+    <input type="checkbox" name="confirm" value="Tak"><br>
+    <input type="submit" name="delete_acc" value="Skasuj konto">
 </form>
 </p>
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
+
 
 
 <?php
@@ -44,7 +62,9 @@ $db_user = "root";
 $db_pass = "";
 $db_name_db = "prim_msgr";
 $conn = new mysqli($db_name, $db_user, $db_pass, $db_name_db);
-
+$login_del = $_SESSION['login'];
+$pass_del = $_POST["password"];
+$checkbox= $_POST["confirm"];
 if ($conn->connect_error) {
     die("Nie można połączyć się z bazą danych: " . $conn->connect_error);
 }
@@ -69,22 +89,21 @@ else if (isset($_POST["wyloguj"])) {
     header("Location: login.php");
     exit();
 }
-else if (isset($_POST["delete_acc"])) {
-    header("Location: delete_acc.php");
-    exit();
+if (isset($_POST['delete_acc']) && $checkbox == "Tak") {
+//tutaj skonczylem -> nie dziala query
+    $query_check = "SELECT * FROM Users WHERE Login = '$login_del' AND Haslo = '$pass_del'";
+    $result_check = mysqli_query($conn, $query_check);
+
+    if ($result_check && mysqli_num_rows($result_check) > 0) {
+//        $_SESSION['login'] = $login_username;
+        $query_delete = "DELETE * FROM Users WHERE Login = '$login_del'";
+        $result_delete = mysqli_query($conn, $query_delete);
+
+        header("Location: login.php");
+        exit();
+    }
 }
-else if (isset($_POST["question_change"])) {
-    header("Location: question_change.php");
-    exit();
-}
-else if (isset($_POST["mail_change"])) {
-    header("Location: mail_change.php");
-    exit();
-}
-else if (isset($_POST["password_change"])) {
-    header("Location: password_change.php");
-    exit();
+else {
+    echo "Podano nieprawidłowe dane";
 }
 ?>
-</body>
-</html>
