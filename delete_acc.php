@@ -53,57 +53,73 @@
 
 
 
-
 <?php
 session_start();
 
-$db_name = "localhost";
+$db_host = "localhost";
 $db_user = "root";
 $db_pass = "";
-$db_name_db = "prim_msgr";
-$conn = new mysqli($db_name, $db_user, $db_pass, $db_name_db);
-$login_del = $_SESSION['login'];
-$pass_del = $_POST["password"];
-$checkbox= $_POST["confirm"];
+$db_name = "prim_msgr";
+
+// Połączenie z bazą danych
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 if ($conn->connect_error) {
     die("Nie można połączyć się z bazą danych: " . $conn->connect_error);
 }
 
+// Sprawdzenie, czy użytkownik jest zalogowany
 if (!isset($_SESSION['login'])) {
     header("Location: login.php");
     exit();
 }
-//} else {
-//    // echo "Zalogowano jako: " . $_SESSION['login'];
-//    // $querry_id="SELECT ID FROM users WHERE Login='".$_SESSION['login']."'";
-//    // $result_id=mysqli_query($conn,$querry_id);
-//    // $row_id=mysqli_fetch_assoc($result_id);
-//    // print($row_id." ".$result_id);
-//}
+
+// Pobranie danych z sesji
+$login_del = $_SESSION['login'];
+
+// Sprawdzenie danych przesłanych w formularzu
+$pass_del = $_POST["password"] ?? null;
+$checkbox = $_POST["confirm"] ?? null;
+
+// Obsługa różnych akcji
 if (isset($_POST["dodaj_znajomego"])) {
     header("Location: index.php");
     exit();
 }
-else if (isset($_POST["wyloguj"])) {
+
+if (isset($_POST["wyloguj"])) {
     session_destroy();
     header("Location: login.php");
     exit();
 }
-if (isset($_POST['delete_acc']) && $checkbox == "Tak") {
-//tutaj skonczylem -> nie dziala query
-    $query_check = "SELECT * FROM Users WHERE Login = '$login_del' AND Haslo = '$pass_del'";
-    $result_check = mysqli_query($conn, $query_check);
 
-    if ($result_check && mysqli_num_rows($result_check) > 0) {
-//        $_SESSION['login'] = $login_username;
-        $query_delete = "DELETE * FROM Users WHERE Login = '$login_del'";
-        $result_delete = mysqli_query($conn, $query_delete);
+// Usuwanie konta
+if (isset($_POST['delete_acc'])) {
+    if ($checkbox === "Tak" && $pass_del) {
+        // Zapytanie przygotowane do sprawdzenia loginu i hasła
+        $stmt_check = $conn->prepare("SELECT * FROM Users WHERE Login = ? AND Haslo = ?");
+        $stmt_check->bind_param("ss", $login_del, $pass_del);
+        $stmt_check->execute();
+        $result_check = $stmt_check->get_result();
 
-        header("Location: login.php");
-        exit();
+        if ($result_check->num_rows > 0) {
+            // Użytkownik istnieje, usuń konto
+            $stmt_delete = $conn->prepare("DELETE FROM Users WHERE Login = ?");
+            $stmt_delete->bind_param("s", $login_del);
+            $stmt_delete->execute();
+
+            // Wyloguj użytkownika po usunięciu konta
+            session_destroy();
+            header("Location: login.php");
+            exit();
+        } else {
+            echo "Podano nieprawidłowe dane.";
+        }
+
+        $stmt_check->close();
+    } else {
+        echo "Wszystkie pola muszą być wypełnione i musisz potwierdzić usunięcie.";
     }
 }
-else {
-    echo "Podano nieprawidłowe dane";
-}
+
+$conn->close();
 ?>
