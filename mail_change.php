@@ -25,16 +25,15 @@
 </div>
 
 
-<p>
+<div>
     <form method="post">
-    Podaj hasło <br>
-    <input type="password" name="password" value="Podaj hasło"><br>
-    Czy jesteś świadomy tego co robisz?<br>
-   <input type="checkbox" name="confirm" value="Tak">
-    <input type="submit" name="delete_acc" value="Skasuj konto">
- </form>
-</p>
-
+        <input type="text" placeholder="Podaj aktualny adres E-Mail" name="old_mail">
+        <input type="text" placeholder="Podaj nowy E-Mail" name="new_mail1">
+        <input type="text" placeholder="Powtórz nowy adres E-Mail" name="new_mail2">
+        <input type="password" placeholder="Podaj hasło" name="pass_conf">
+        <input type="submit" value="Zmień hasło" name="mail_change">
+    </form>
+</div>
 
 
 
@@ -56,6 +55,11 @@
 
 <?php
 session_start();
+$old_mail = $_POST['old_mail'];
+$new_mail = $_POST['new_mail1'];
+$new_mail2 = $_POST['new_mail2'];
+$pass_conf = $_POST['pass_conf'];
+$mail_change = $_POST['mail_change'];
 
 $db_name = "localhost";
 $db_user = "root";
@@ -87,5 +91,25 @@ else if (isset($_POST["wyloguj"])) {
     header("Location: login.php");
     exit();
 }
+if (isset($mail_change)) {
+    $query_passcheck = "SELECT Haslo from users where Login=$_SESSION[login]";
+    $query_check = $conn->prepare($query_passcheck);
+    $query_check->execute();
+    $check_pass = $query_check->fetch();
+    if ($check_pass==$pass_conf) {
+        if ($new_mail == $new_mail2) {
+            $query_change_mail = "UPDATE users SET Email=? WHERE Login=$_SESSION[login]";
+            $execute_change_mail = $conn->prepare($query_change_mail);
+            echo "Pomyślnie zmieniono adres E-Mail";
+        }
+        else {
+            echo "Upewnij się, że wprowadziłeś odpowiedni adres E-Mail.";
+        }
+    }
+    else {
+        echo "Podałeś złe hasło";
+    }
+}
+
 
     ?>
